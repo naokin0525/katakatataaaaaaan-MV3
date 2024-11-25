@@ -1,34 +1,26 @@
-function onConfigUpdated(aKey) {
-    debug(aKey);
-    debug(configs);
-}
+self.addEventListener('install', (event) => {
+  console.log('Service worker installed');
+});
 
-async function applyMCDConfigs() {
-  try {
-    var response = await send({ command: 'read-mcd-configs' });
-    log('loaded MCD configs: ', response);
-    Object.keys(response).forEach((aKey) => {
-      configs[aKey] = response[aKey];
-      configs.$lock(aKey);
-    });
+self.addEventListener('activate', (event) => {
+  console.log('Service worker activated');
+});
+
+self.addEventListener('message', async (event) => {
+  if (event.data.command === 'read-mcd-configs') {
+    try {
+      const response = await readMCDConfigs();
+      event.ports[0].postMessage({ success: true, data: response });
+    } catch (error) {
+      event.ports[0].postMessage({ success: false, error: error.message });
+    }
   }
-  catch(aError) {
-    log('Failed to read MCD configs: ', aError);
-  }
+});
+
+async function readMCDConfigs() {
+  const response = await browser.runtime.sendNativeMessage(
+    'org.gigo_ice.katakatataaaaaaan_we_host',
+    { command: 'read-mcd-configs' }
+  );
+  return response;
 }
-
-function send(aMessage) {
-  if (configs.debug)
-    aMessage.debug = true;
-  log('Sending: ', aMessage);
-  return browser.runtime.sendNativeMessage('org.gigo_ice.katakatataaaaaaan_we_host', aMessage);
-}
-
-(async () => {
-  log('initial startup');
-  await configs.$load();
-  await applyMCDConfigs();
-
-  configs.$addObserver(onConfigUpdated);
-})();
-
