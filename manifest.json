@@ -1,38 +1,34 @@
 {
+  "manifest_version": 3,
+  "name": "katakatataaaaaaan-MV3",
+  "version": "1.0",
+  "author": "Original author: @ampersand_xyz <info@incr.jp>, Ported by @naokin0525",
+  "description": "ｶﾀｶﾀﾀﾀｰﾝ!!",
+  "icons": {
+    "129": "images/icon.png"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["images/*.svg"],
+      "matches": ["<all_urls>"]
+    }
+  ],
   "content_scripts": [
     {
+      "matches": [
+        "<all_urls>"
+      ],
       "js": [
         "js/jquery.js",
         "js/caretposition.js",
         "common/Configs.js",
         "common/common.js",
         "js/contents.js"
-      ],
-      "matches": [
-        "<all_urls>"
       ]
     }
   ],
-  "description": "ｶﾀｶﾀﾀﾀｰﾝ!!",
-  "icons": {
-    "129": "images/icon.png"
-  },
-  "author": "Original author: @ampersand_xyz <info@incr.jp>, Ported by @kenhys",
-  "manifest_version": 3,
-  "name": "katakatataaaaaaan-we",
-  "version": "1.1resigned1",
-  "web_accessible_resources": [
-    "images/*.svg"
-  ],
   "options_ui": {
-    "page": "options/options.html",
-    "chrome_style": true
-  },
-  "applications": {
-    "gecko": {
-      "id": "katakatataaaaaaan-we@gigo-ice.org",
-      "strict_min_version": "52.0"
-    }
+    "page": "options/options.html"
   },
   "background": {
     "service_worker": "js/background.js"
